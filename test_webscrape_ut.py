@@ -93,11 +93,10 @@ class web_code_ut(unittest.TestCase):
 
     @mock.patch('os.path.isdir')
     @mock.patch('fpdf.FPDF.add_page')
-    def test_create_pdf_success(self,m_pdf,m_isdir):
+    def test_create_pdf_fail(self,m_pdf,m_isdir):
         m_isdir.return_value = False
         m_pdf.side_effect = RuntimeError
         win = Web_users('https://lol.in')
-        win.user_list = ['George Bluth', 'Janet Weaver']
         ret = win.create_file()
         self.assertFalse(ret)
 

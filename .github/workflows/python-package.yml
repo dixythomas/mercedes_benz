@@ -40,12 +40,6 @@ jobs:
         coverage run -m unittest test_webscrape_ut.py
         coverage report
         coverage html
-        
-  Unittest:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
     - name: Upload unittest test results
       uses: actions/upload-artifact@v3
       with:

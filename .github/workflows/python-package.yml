@@ -1,0 +1,62 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python package
+
+on:
+  push:
+    branches: 
+      - main
+      - 'test/**'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: self-hosted
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10"]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install requests
+        python -m pip install coverage
+        python -m pip install fpdf
+    - name: run web scraping
+      run: |
+        python web_scraper.py
+    - name: run unitests
+      run: |
+        coverage run -m unittest test_webscrape_ut.py
+        coverage report
+        coverage html
+        
+  Unittest:
+    runs-on: self-hosted
+    strategy:
+      fail-fast: false
+    steps:
+    - name: Upload unittest test results
+      uses: actions/upload-artifact@v3
+      with:
+          name: unitest-results-${{ matrix.python-version }}
+          path: htmlcov/
+        # Use always() to always run this step to publish test results when there are test failures
+      if: ${{ always() }}
+    - name: Upload pdf file
+      uses: actions/upload-artifact@v3
+      with:
+          name: pdf
+          path: pdf_document/
+        # Use always() to always run this step to publish test results when there are test failures
+      if: ${{ always() }}

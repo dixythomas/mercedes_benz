@@ -61,7 +61,7 @@ class Web_users(object):
                 shutil.copyfileobj(request_site.raw, out_file)
             pdf.cell(200, 10, txt=user_info['first_name'], ln=1, align='C')
             pdf.cell(200, 10, txt=user_info['email'], ln=1, align='C')
-            pdf.image(end[5])
+            pdf.image(end[5], x=90)
         try:
             os.mkdir('pdf_document')
         except OSError as e:

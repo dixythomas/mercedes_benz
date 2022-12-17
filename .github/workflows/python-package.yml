@@ -32,14 +32,14 @@ jobs:
         python -m pip install requests
         python -m pip install coverage
         python -m pip install fpdf
+    - name: run web scraping
+      run: |
+        python web_scraper.py
     - name: run unitests
       run: |
         coverage run -m unittest test_webscrape_ut.py
         coverage report
         coverage html
-    - name: run web scraping
-      run: |
-        python web_scraper.py
         
   Unittest:
     runs-on: ubuntu-latest

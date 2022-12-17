@@ -39,13 +39,15 @@ class web_code_ut(unittest.TestCase):
     @mock.patch('requests.get')
     @mock.patch('shutil.copyfileobj')
     @mock.patch('fpdf.FPDF.image')
-    def test_create_file_success(self,m_image,m_copy,m_req,m_dir,m_shutil,m_isdir):
+    @mock.patch('fpdf.FPDF.output')
+    def test_create_file_success(self,m_out,m_image,m_copy,m_req,m_dir,m_shutil,m_isdir):
         m_req.return_value = mock.MagicMock(status_code=200, json=lambda:{"data":[{"first_name":"George","last_name":"Bluth","email":"Bluth@gmail.com","avatar":"https://reqr.in/img/laces/6-image.jpg"}]})
         m_isdir.return_value = True
         m_shutil.return_value = True
-        m_dir.side_effect = 'pdf_document'
+        m_dir.return_value = 'pdf_document'
         m_copy.return_value = True
         m_image.return_value = True
+        m_out.return_value = 'new_file.pdf'
         win = Web_users('https://lol.in')
         win.get_url()
         win.print_data(param='data')

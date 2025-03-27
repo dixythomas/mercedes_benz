@@ -5,6 +5,7 @@ from web_scraper import Web_users
 class web_code_ut(unittest.TestCase):
     @mock.patch('requests.get')
     def test_is_return_code(self, m_req):
+        #mocking the requests librar
         m_req.return_value = mock.MagicMock(status_code=500)
         win = Web_users('https://lol.in')
         ret = win.get_url()
